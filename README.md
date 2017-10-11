@@ -1,12 +1,13 @@
 # Discrobble
-"Scrobble" your current Google Play Music song title and artist to Discord.
+"Scrobble" your current Google Play Music song title and artist to Discord using Rich Presence.
 
 ## Setup
 You have to install the userscript manually. Copy and paste the code in Discrobble.js into your browser's user script manager, and change the following two lines accordingly:
 
 ```js
 var discordToken = ""; // your Discord token (see localStorage)
-var streamURL = ""; // if you want to show as "streaming", set to a twitch URL
+// Discord app ID, go to https://discordapp.com/developers/applications/me, create a new app, enable Rich Presence, and copy the "client ID" here
+var discordappId = "";
 ```
 
 **Reminder**: this *technically* counts as a selfbot, which is "illegal". Use at your own risk. 
