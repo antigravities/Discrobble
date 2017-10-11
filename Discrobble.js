@@ -1,21 +1,22 @@
 // ==UserScript==
 // @name         Discrobble
 // @namespace    https://alexandra.moe/
-// @version      0.1
-// @description  "Scrobble" your current Google Play Music song title and artist to Discord.
+// @version      0.2
+// @description  "Scrobble" your current Google Play Music song title and artist to Discord using Rich Presence.
 // @author       antigravities
 // @match        https://play.google.com/music/listen*
 // @grant        GM_xmlHttpRequest
-// @require      https://cdn.rawgit.com/izy521/discord.io/875dc8c21c34dac01a9b6c97119e3ffb20de1c21/lib/index.js
+// @require      https://alexandra.moe/discord.min.js?11.2.1
 // ==/UserScript==
 
 (function() {
     'use strict';
 
     var discordToken = ""; // your Discord token
-    var streamURL = "https://twitch.tv/antigravities"; // if you want to show as "streaming", set to a twitch URL
+    // Discord app ID, go to https://discordapp.com/developers/applications/me, create a new app, enable Rich Presence, and copy the "client ID" here
+    var discordappId = "";
 
-    var discord = new Discord.Client({token: discordToken, autorun: true });
+    var discord = new Discord.Client();
 
     var scrobbleText = "standard";
 
@@ -23,23 +24,20 @@
         setInterval(function(){
             var toScrobble = "";
             if( document.getElementById("player-artist") === null || document.getElementById("playerSongInfo").style.display === "none" ) toScrobble = "";
-            else toScrobble = "🎵 " + document.getElementById("player-artist").innerText.trim() + " - " + document.getElementById("currently-playing-title").innerText.trim();
+            else toScrobble = document.getElementById("player-artist").innerText.trim() + " - " + document.getElementById("currently-playing-title").innerText.trim();
 
             if( toScrobble == scrobbleText ) return;
 
             if( toScrobble === "" ){
-                discord.setPresence({status: 'online', game: { name: ".", type: 0 } });
+                discord.user.setPresence({status: 'online', game: null });
                 scrobbleText = "";
                 return;
             }
 
-            discord.setPresence({ game: { name: toScrobble, type: 1, url: "https://twitch.tv/antigravities" } });
+            discord.user.setPresence({ game: { name: "🎵🎧🎵", details: toScrobble.split(" - ")[0], state: toScrobble.split(" - ")[1], type: 0, application_id: discordappId } });
             scrobbleText = toScrobble;
         }, 1000);
-
-        window.addEventListener("onBeforeUnload", function(){
-            discord.setPresence({status: 'online', game: { name: ".", type: 0 } });
-            discord.disconnect();
-        });
     });
+
+    discord.login(discordToken);
 })();
