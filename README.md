@@ -1,3 +1,5 @@
+# [Selfbots are banned and will result in account termination!](https://support.discordapp.com/hc/en-us/articles/115002192352-Automated-user-accounts-self-bots-)
+
 # Discrobble
 "Scrobble" your current Google Play Music song title and artist to Discord using Rich Presence.
 
